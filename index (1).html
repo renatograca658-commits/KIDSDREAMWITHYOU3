@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Dream With You - Clockwork Orange Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+        }
+
+        .hero::before {
+            content: "KIDS DREAM";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(220, 0, 0, 0.05);
+            text-align: center;
+            z-index: 1;
+            white-space: nowrap;
+            filter: blur(2px);
+            letter-spacing: 3px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            background: rgba(220, 0, 0, 0.95);
+            padding: 60px 80px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-content h1 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero-content h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* COLLECTION SECTION */
+        .collection-header {
+            background: linear-gradient(135deg, #dc0000 0%, #ff4444 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .collection-header h2 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .collection-header p {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* GALLERY SECTION */
+        .gallery-container {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(220, 0, 0, 0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(220, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 40px;
+            color: white;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* LIGHTBOX */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            font-size: 50px;
+            color: white;
+            cursor: pointer;
+            transition: color 0.2s;
+            z-index: 1001;
+        }
+
+        .lightbox-close:hover {
+            color: #dc0000;
+        }
+
+        .lightbox-prev, .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            padding: 20px;
+            transition: color 0.2s;
+            z-index: 1001;
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        .lightbox-prev:hover, .lightbox-next:hover {
+            color: #dc0000;
+        }
+
+        /* COUNTER */
+        .lightbox-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 18px;
+            background: rgba(220, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1001;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* FOOTER */
+        footer {
+            background: #dc0000;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        footer h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        footer p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: #ffff00;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 48px;
+            }
+
+            .hero-content h2 {
+                font-size: 32px;
+            }
+
+            .collection-header h2 {
+                font-size: 36px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+
+            .lightbox-prev, .lightbox-next {
+                font-size: 30px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Kids Dream</h1>
+            <h2>Clockwork Orange</h2>
+            <p>Porsche 911 Vintage Factor Collection</p>
+        </div>
+    </section>
+
+    <!-- COLLECTION HEADER -->
+    <section class="collection-header">
+        <h2>Porsche 911</h2>
+        <p>Coleção Limitada Clockwork Orange - Vintage Factor</p>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery-container">
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Gallery items will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <div class="lightbox-content">
+            <img class="lightbox-image" id="lightboxImage" src="" alt="">
+            <span class="lightbox-prev" onclick="previousImage()">&#10094;</span>
+            <span class="lightbox-next" onclick="nextImage()">&#10095;</span>
+            <div class="lightbox-counter">
+                <span id="currentImage">1</span> / <span id="totalImages">1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <h3>Kids Dream With You</h3>
+        <p>Coleção Porsche 911 Clockwork Orange - Vintage Factor</p>
+        <div class="footer-links">
+            <a href="https://www.vinted.pt/users/kidsdreamswithyou" target="_blank">Vinted Store</a>
+            <a href="https://linktr.ee/Kidsdreamswithyou" target="_blank">Linktree</a>
+            <a href="mailto:contact@kidsdreamwithyou.com">Contacte-nos</a>
+        </div>
+    </footer>
+
+    <script>
+        // Array com TODAS as 20 fotos da coleção Clockwork Orange
+        const images = [
+            'IMG_9400.jpg',
+            'IMG_9396.jpg',
+            'IMG_9399.jpg',
+            'IMG_9386.jpg',
+            'IMG_9397.jpg',
+            'IMG_9381.jpg',
+            '99ffb9e5-e903-44f1-9e6c-9062a9f127b7.jpg',
+            'IMG_9378.jpg',
+            'IMG_9394.jpg',
+            'bfe47f02-51f4-436d-8ac5-7421f333f258.jpg',
+            '59604c7f-4166-4e41-b760-d1b23afc6629.jpg',
+            'IMG_9380.jpg',
+            '2896618c-2418-4ef0-9f7b-91e9b91bb475.jpg',
+            'IMG_9387.jpg',
+            'IMG_9385.jpg',
+            'IMG_9383.jpg',
+            'IMG_9395.jpg',
+            'cf2a9883-6e3f-4857-8bad-a4a00c079f77.jpg',
+            'IMG_9402.jpg',
+            'IMG_9398.jpg'
+        ];
+
+        let currentImageIndex = 0;
+
+        // Populate gallery
+        function populateGallery() {
+            const gallery = document.getElementById('galleryGrid');
+            images.forEach((image, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${image}" alt="Clockwork Orange ${index + 1}" onclick="openLightbox(${index})">
+                    <div class="gallery-overlay">🔍</div>
+                `;
+                gallery.appendChild(item);
+            });
+            document.getElementById('totalImages').textContent = images.length;
+        }
+
+        // Lightbox functions
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const image = document.getElementById('lightboxImage');
+            image.src = images[index];
+            document.getElementById('currentImage').textContent = index + 1;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            document.getElementById('lightboxImage').src = images[currentImageIndex];
+            document.getElementById('currentImage').textContent = currentImageIndex + 1;
+        }
+
+        function previousImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            document.getElementById('lightboxImage').src = images[currentImageIndex];
+            document.getElementById('currentImage').textContent = currentImageIndex + 1;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') previousImage();
+                if (e.key === 'Escape') closeLightbox();
+            }
+        });
+
+        // Initialize gallery
+        populateGallery();
+    </script>
+</body>
+</html>
